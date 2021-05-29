@@ -1,0 +1,23 @@
+{
+  "name": "Music-bot-with-buttons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "ffmpeg-static": "^4.3.0",
+    "gcommands": "github:Garlic-Team/GCommands#dev",
+    "opusscript": "0.0.8",
+    "solenolyrics": "^5.0.0",
+    "youtube-sr": "^4.1.1",
+    "ytdl-core": "^4.8.2"
+  }
+}
