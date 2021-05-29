@@ -23,4 +23,4 @@
  - `ytdl-core` npm
 
 
- `npm i discord.js ffmpeg-static gcommands opusscript solenolyrics youtube-sr ytdl-core`
+ `npm i discord.js ffmpeg-static Garlic-Team/GCommands opusscript solenolyrics youtube-sr ytdl-core`
