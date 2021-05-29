@@ -50,12 +50,12 @@ let updateGuildQueue = (ready) => {
 /**
  * Using GCommands v4 (dev build)
  */
-process.setMaxListeners(50);
+client.setMaxListeners(50);
 client.on("ready", () => {
   updateGuildQueue(true);
   const GCommandsClient = new GCommands(client, {
     cmdDir: "cmds",
-    unkownCommandMessage: false,
+    unkownCommandMessage: true,
     language: "english",
     slash: {
         slash: 'both',
@@ -63,6 +63,23 @@ client.on("ready", () => {
     },
     defaultCooldown: 3,
   });
+
+  client.dispatcher.addInhibitor(async(cmd, {member, respond}) => {
+    let cmdBlacklist = ["help"];
+    if (cmdBlacklist.includes(cmd)) return;
+
+    let djCmds = ["back","jump","leave","loop","shuffle","skip","volume"];
+    let hasPermissions = await client.modules.get("CheckPermissions")(client, member, djCmds.includes(cmd.name) ? "dj" : "default")
+
+    if (!hasPermissions) {
+      respond({ content: ":x: *Insufficient permissions*", ephemeral: true });
+      return false;
+    } else {
+      return true;
+    }
+
+    return true;
+  })
 
   GCommandsClient.on("debug", console.log);
 });

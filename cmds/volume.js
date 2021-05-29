@@ -84,8 +84,9 @@ module.exports = {
       }, 60000);
 
 
+      if(!parseInt(args[0]) || args[0] > 100 || args[0] < 0) return error("Please set valid integer. `(0-100)`");
       if(args[0]) {
-        if (client.music.playing[guild.id].connection) client.music.playing[guild.id].connection.dispatcher.setVolumeLogarithmic(parseInt(args[0]) / 200)
+        if (client.music.playing[guild.id].connection) client.music.playing[guild.id].connection.dispatcher.setVolumeLogarithmic(parseInt(args[0]) / 100)
         
         respond({ content: `• New volume is: \`${args[0]}%\`` });
       }

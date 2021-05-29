@@ -12,17 +12,15 @@ module.exports = {
 
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
 
-      let hasPerms = client.modules.get("CheckPermissions")(member, "dj");
-      if (!hasPerms) return error("Insufficient permissions");
-
       let again = new MessageButton().setLabel("Again").setStyle("red").setID(`${msgId}_again`),
           cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`${msgId}_shuffleCancel`);
 
       // shuffle
       let shuffleIt = () => {
-        let qu = client.music.queue[guild.id].reverse();
+        client.music.queue[guild.id] = client.music.queue[guild.id].sort(() => Math.floor(Math.random() * 10) > 5 ? -1 : 1);
+        let qu = client.music.queue[guild.id];
+
         client.music.playing[guild.id].index = qu.findIndex((s) => s.playedAt === client.music.playing[guild.id].playedAt);
-        client.music.queue[guild.id] = qu;
       }
 
       respond({

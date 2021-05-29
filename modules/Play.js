@@ -1,7 +1,7 @@
 const { MessageButton } = require("gcommands");
 const ytdl = require("ytdl-core");
 
-module.exports = async (client, guild, member, textChannel, video) => {
+module.exports = async (client, guild, member, textChannel, video, isSkipped) => {
   let connection;
   try {
     connection = await member.voice.channel.join();
@@ -32,11 +32,14 @@ module.exports = async (client, guild, member, textChannel, video) => {
   let dispatcher = connection
     .play(ytdl(`https://www.youtube.com/watch?v=${video.id}`))
     .on("finish", () => {
-      if(client.music.data[guild.id].loop) {
-        require("./Play.js")(client, guild, member, textChannel, video);
+      let willSkip = client.music.data[guild.id].skipQueue;
+      if(client.music.data[guild.id].loop && !willSkip) {
+        require("./Play.js")(client, guild, member, textChannel, video, true);
         return;
       }
+      if (willSkip) data.index--;
       if (!client.music.queue[guild.id][data.index + 1]) {
+        client.music.data[guild.id].skipQueue = false;
         client.music.data[guild.id].isPlaying = false;
         data.index = -1;
         client.music.playing[guild.id] = data;
@@ -46,7 +49,7 @@ module.exports = async (client, guild, member, textChannel, video) => {
     });
 
 
-  textChannel.send(`• Started playing: **${video.title}**`)
+  if (!isSkipped) textChannel.send(`• Started playing: **${video.title}**`)
 
   return undefined;
 }

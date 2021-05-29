@@ -16,11 +16,11 @@
  - Node `12.x+`
  - `discord.js 12` npm
  - FFmpeg `ffmpeg-static` npm
- - `gcommands` npm
+ - `gcommands v4` npm
  - `opusscript` npm
  - `solenolyrics` npm
  - `youtube-sr` npm
  - `ytdl-core` npm
 
 
- `npm i discord.js ffmpeg-static Garlic-Team/GCommands opusscript solenolyrics youtube-sr ytdl-core`
+ `npm i discord.js ffmpeg-static Garlic-Team/GCommands#dev opusscript solenolyrics youtube-sr ytdl-core`

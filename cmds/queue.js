@@ -10,9 +10,6 @@ module.exports = {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
       let msgId = Date.now();
 
-      let hasPerms = client.modules.get("CheckPermissions")(member, "default");
-      if (!hasPerms) return error("Insufficient permissions");
-
       let arrows = ["⬐","⬑"];
       let dots = "…";
 

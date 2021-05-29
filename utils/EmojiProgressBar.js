@@ -1,8 +1,12 @@
 class ProgressBar {
-  constructor (num, cap) {
+  constructor (num, cap, client) {
     this.bits = [];
     this.cap = cap;
     this.num = num;
+    this.client = client
+
+    this.useCustomEmojis = true;
+    // Warning, you must create your own emojis!
 
     let add = 1 / cap;
     for (let i = 0; i < cap; i++) {
@@ -14,13 +18,22 @@ class ProgressBar {
     return this;
   }
 
-  _make(map, t) {
+  _make(map, customMap, t) {
     let f = [];
     for (let i = 0; i < this.cap; i++) {
-      let axd = map[this.bits[i]];
-      f.push(axd);
+      if (this.useCustomEmojis && t === "dc") {
+        let name = [...customMap[this.bits[i]]];
+        if (name[0] && i === 0) name[1] += "Start";
+        if (name[0] && i === this.cap - 1) name[1] += "End";
+        console.log(name[1]);
+
+        f.push(this.client.emojis.cache.find(n => n.name === name[1]));
+      } else {
+        let axd = map[this.bits[i]];
+        f.push(axd);
+      }
     }
-    return f.join(t === "dc" ? "" : "");
+    return f.join("");
   }
 
   toBits() {
@@ -40,6 +53,12 @@ class ProgressBar {
       0: ":black_medium_square:",
     0.5: ":blue_square:",
       1: ":blue_square:"
+    }, {
+      0: [false, "empty"],
+    0.5: [true, "blurplehalf"],
+      1: [true, "blurplefull"]
+      // Whether to add a 'Start'/'End'
+      // string at the end
     }, "dc");
   }
 }

@@ -19,9 +19,6 @@ module.exports = {
     run: async({client, interaction, respond, guild, channel, edit, member}, args) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
-      let hasPerms = client.modules.get("CheckPermissions")(member, "default");
-      if (!hasPerms) return error("Insufficient permissions");
-
       if (!member.voice) return error("Please connect to a voice channel");
       if (client.music.playing[guild.id].channel && member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
@@ -73,6 +70,7 @@ module.exports = {
           }
         } else if (video) {
           // Play the Music
+          video.duration = video.duration * 1000;
           video.host = host;
           video.request = member.user;
           video.index = client.music.queue[guild.id].length;
@@ -103,11 +101,11 @@ module.exports = {
       
       let host = "YouTube";
       // Check Url
+      if (ytb.validate(term, "PLAYLIST")) return error("Playlists are not yet supported");
       if (ytb.validate(term, "VIDEO")) {
         playAudio(undefined, await ytb.getVideo(term));
         return;
       }
-      if (ytb.validate(term, "PLAYLIST")) return error("Playlists are not yet supported");
 
       let vids = await ytb.search(term, { limit: 5 });
 

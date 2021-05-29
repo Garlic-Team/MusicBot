@@ -9,9 +9,6 @@ module.exports = {
     run: async({client, interaction, respond, guild, edit, member}, args) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
-      let hasPerms = client.modules.get("CheckPermissions")(member, "dj");
-      if (!hasPerms) return error("Insufficient permissions");
-
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
       if (!member.voice) return error("You aren't connected to a VC");
 
