@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "volume",
     description: "Set new volume",
-    guildOnly: "696461066393354301",
     expectedArgs: [
       {
         name: "volume",
@@ -31,13 +30,19 @@ module.exports = {
       buttonRow.addComponent(volumeButtonMinus)
       buttonRow.addComponent(volumeButtonCancel)
 
-      let msg;
-      if(!args[0]) {
-        msg = await respond({
-          content:"• Please set new volume",
-          components: buttonRow
-        })
+      if(args[0]) {
+        if(!parseInt(args[0]) || args[0] > 100 || args[0] < 0) return error("Please set valid integer. `(0-100)`");
+
+        if (client.music.playing[guild.id].connection) client.music.playing[guild.id].connection.dispatcher.setVolumeLogarithmic(parseInt(args[0]) / 100)
+        
+        respond({ content: `• New volume is: \`${args[0]}%\`` });
+        return;
       }
+
+      let msg = await respond({
+        content:"• Please set new volume",
+        components: buttonRow
+      })
 
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
@@ -96,13 +101,5 @@ module.exports = {
       setTimeout(() => {
         client.removeListener("clickButton", buttonEvent);
       }, 60000);
-
-
-      if(!parseInt(args[0]) || args[0] > 100 || args[0] < 0) return error("Please set valid integer. `(0-100)`");
-      if(args[0]) {
-        if (client.music.playing[guild.id].connection) client.music.playing[guild.id].connection.dispatcher.setVolumeLogarithmic(parseInt(args[0]) / 100)
-        
-        respond({ content: `• New volume is: \`${args[0]}%\`` });
-      }
     }
 }

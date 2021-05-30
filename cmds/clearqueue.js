@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "clearqueue",
     description: "Clears the queue",
-    guildOnly: "696461066393354301",
     alises: ["clr","clear","clearq","clrqueue","deletequeue","delqueue","clearq","deleteq"],
     clientRequiredPermissions: ["SEND_MESSAGES"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {

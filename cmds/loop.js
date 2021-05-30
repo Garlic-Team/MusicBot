@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "loop",
     description: "Enable/disable loop",
-    guildOnly: "696461066393354301",
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });

@@ -6,7 +6,6 @@ const FormatTime = require("../utils/FormatTime.js");
 module.exports = {
     name: "nowplaying",
     description: "Shows the current song",
-    guildOnly: "696461066393354301",
     aliases: ["np"],
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member, message}, args) => {

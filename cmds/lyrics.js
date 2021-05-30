@@ -5,7 +5,6 @@ const { requestLyricsFor } = require("solenolyrics");
 module.exports = {
     name: "lyrics",
     description: "Show music text",
-    guildOnly: "696461066393354301",
     aliases: ["lyr"],
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {

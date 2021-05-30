@@ -15,7 +15,6 @@ module.exports = {
         required: true
       }
     ],
-    guildOnly: "696461066393354301",
     aliases: ["p","add"],
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS","CONNECT","SPEAK"],
     run: async({client, interaction, respond, guild, channel, edit, member}, args) => {

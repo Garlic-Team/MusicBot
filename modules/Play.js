@@ -1,6 +1,5 @@
 const { MessageButton } = require("gcommands");
 const ytdl = require("ytdl-core");
-const ytdlErit = require("erit-ytdl");
 
 module.exports = async (client, guild, member, textChannel, video, isSkipped, presetVolume, isNew) => new Promise(async (res) => {
   let connection;
@@ -30,11 +29,11 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped, pr
   client.music.playing[guild.id] = data;
   client.music.data[guild.id].isPlaying = true;
 
-  let stream = await ytdlErit(`https://www.youtube.com/watch?v=${video.id}`, { highWaterMark: 1 << 25 })
+  let stream = await ytdl(`https://www.youtube.com/watch?v=${video.id}`);
   let streamType = "opus";
 
   let dispatcher = connection
-    .play(stream, {type: streamType})
+    .play(stream)
     .on("finish", () => {
       let willSkip = client.music.data[guild.id].skipQueue;
       if(client.music.data[guild.id].loop && !willSkip) {

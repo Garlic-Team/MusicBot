@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "jump",
     description: "Jumps to a song",
-    guildOnly: "696461066393354301",
     expectedArgs: [
       {
         name: "position",

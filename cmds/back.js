@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "back",
     description: "Skips the current song",
-    guildOnly: "696461066393354301",
     alises: ["bk","previous","prev","pr"],
     clientRequiredPermissions: ["SEND_MESSAGES"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {

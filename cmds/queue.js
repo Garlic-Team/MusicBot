@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "queue",
     description: "See queue",
-    guildOnly: "696461066393354301",
     aliases: ["list","q"],
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {

@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "djonly",
     description: "Enable/disable dj only",
-    guildOnly: "696461066393354301",
     aliases: ["dj","djo"],
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {

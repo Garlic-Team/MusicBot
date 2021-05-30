@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "leave",
     description: "Leaves the VC",
-    guildOnly: "696461066393354301",
     aliases: ["dc","disconnect"],
     clientRequiredPermissions: ["SEND_MESSAGES"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {

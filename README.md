@@ -4,8 +4,11 @@
 
 ----
 
+### Vote for us! (Please)
+
+
 ### **How to use?**
-- Download the rep, create a `.env` file, and add your `token` into it.
+- Download the repo, create a `.env` file, and add your `token` into it.
 - You need to change guildOnly to your guild id or simply delete this line.
 
 ### Support

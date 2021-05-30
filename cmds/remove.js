@@ -4,7 +4,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "remove",
     description: "Removes a song from the queue",
-    guildOnly: "696461066393354301",
     expectedArgs: [
       {
         name: "position",

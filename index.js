@@ -55,7 +55,7 @@ client.on("ready", () => {
   updateGuildQueue(true);
   const GCommandsClient = new GCommands(client, {
     cmdDir: "cmds/",
-    unkownCommandMessage: true,
+    unkownCommandMessage: false,
     language: "english",
     slash: {
         slash: 'both',
