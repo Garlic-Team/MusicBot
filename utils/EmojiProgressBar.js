@@ -1,11 +1,11 @@
 class ProgressBar {
-  constructor (num, cap, client) {
+  constructor (num, cap, client, useCustomEmojis = false) {
     this.bits = [];
     this.cap = cap;
     this.num = num;
     this.client = client
 
-    this.useCustomEmojis = true;
+    this.useCustomEmojis = useCustomEmojis;
     // Warning, you must create your own emojis!
 
     let add = 1 / cap;
@@ -24,8 +24,7 @@ class ProgressBar {
       if (this.useCustomEmojis && t === "dc") {
         let name = [...customMap[this.bits[i]]];
         if (name[0] && i === 0) name[1] += "Start";
-        if (name[0] && i === this.cap - 1) name[1] += "End";
-        console.log(name[1]);
+        if (name[0] && (i === this.cap - 1 || this.bits[i + 1] === 0 && this.bits[i] !== 0)) name[1] += "End";
 
         f.push(this.client.emojis.cache.find(n => n.name === name[1]));
       } else {

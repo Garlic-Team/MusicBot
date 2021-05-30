@@ -5,10 +5,10 @@ const { requestLyricsFor } = require("solenolyrics");
 module.exports = {
     name: "lyrics",
     description: "Show music text",
-    guildOnly: "847485277484220447",
+    guildOnly: "696461066393354301",
     aliases: ["lyr"],
+    clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {
-      let msgId = Date.now();
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
@@ -20,6 +20,9 @@ module.exports = {
         .setAuthor("Music Buttons | Lyrics")
         .setDescription(lyrics)
         .setColor("#cf293f");
+
+      if (embed.description.length >= 2048)
+        embed.description = `${embed.description.length > 2048 ? embed.description.substr(0, 2045) + "…"}`;
 
       respond({
         content: embed

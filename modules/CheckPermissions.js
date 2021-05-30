@@ -9,8 +9,6 @@ module.exports = async(client, member, perm) => {
     if (value === "-") delete rolePermissions[key];
   }
 
-  if (member.hasPermission("MANAGER_SERVER", { checkAdmin: true, checkOwner: true })) return true;
-
   let reqPerm = rolePermissions[perm];
 
   if (member.voice && client.music.data[guild.id].isPlaying) {

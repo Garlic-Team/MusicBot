@@ -1,32 +1,39 @@
-const { MessageButton } = require("gcommands");
+const { MessageButton, MessageActionRow } = require("gcommands");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "loop",
     description: "Enable/disable loop",
-    guildOnly: "847485277484220447",
+    guildOnly: "696461066393354301",
+    clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {
-      let msgId = Date.now();
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
-      if (!member.voice) return error("You aren't connected to a VC");
+      if (!member.voice.channel) return error("You aren't connected to a VC");
 
       if (member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
-      let enable = new MessageButton().setLabel("Enable").setStyle("green").setID(`${msgId}_enableLoop`)
-          disable = new MessageButton().setLabel("Disable").setStyle("red").setID(`${msgId}_disableLoop`)
-          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`${msgId}_loopCancel`)
+      let buttonRow = new MessageActionRow()
+      let enable = new MessageButton().setLabel("Enable").setStyle("green").setID(`enableLoop`),
+        disable = new MessageButton().setLabel("Disable").setStyle("red").setID(`disableLoop`),
+        cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`loopCancel`);
+      buttonRow.addComponent(enable)
+      buttonRow.addComponent(disable)
+      buttonRow.addComponent(cancel)
       
-      respond({
+      var msg = await respond({
         content: "• Turn the loop system on/off.",
-        components: [[enable, disable, cancel]]
+        components: buttonRow
       })
 
+      if (client.music.data[guild.id].loop) enable.setDisabled();
+      else disable.setDisabled();
+
       let buttonEvent = async (button) => {
-        if (button.id.split("_")[0] === msgId.toString()) {
+        if (button.message.id === msg.id) {
           if (button.clicker.user.id === member.id) {
-            let buttonId = button.id.split("_")[1];
+            let buttonId = button.id;
 
             if(buttonId == "enableLoop" && client.music.playing[guild.id].connection) {
               client.music.data[guild.id].loop = true
@@ -37,16 +44,20 @@ module.exports = {
               disable.setDisabled()
               enable.setDisabled(false)
             } else if(buttonId == "loopCancel") {
+              enable.setDisabled()
+              disable.setDisabled()
+              cancel.setDisabled()
+
               return button.edit({
                 content: `• The loop system turned ${client.music.data[guild.id].loop ? "on" : "off"}`,
-                components: [[enable.setDisabled(), disable.setDisabled(), cancel.setDisabled()]],
+                components: buttonRow,
                 edited: false
               })
             }
 
             button.edit({
               content: `• The loop system turned ${client.music.data[guild.id].loop ? "on" : "off"}`,
-              components: [[enable, disable, cancel]],
+              components: buttonRow,
               edited: false
             });
           } else {

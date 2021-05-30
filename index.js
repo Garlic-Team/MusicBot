@@ -54,7 +54,7 @@ client.setMaxListeners(50);
 client.on("ready", () => {
   updateGuildQueue(true);
   const GCommandsClient = new GCommands(client, {
-    cmdDir: "cmds",
+    cmdDir: "cmds/",
     unkownCommandMessage: true,
     language: "english",
     slash: {
@@ -63,13 +63,20 @@ client.on("ready", () => {
     },
     defaultCooldown: 3,
   });
+  client.user.setPresence({
+    activity: {
+      type: "COMPETING",
+      name: "being the best music bot"
+    },
+    status: "idle"
+  });
 
-  client.dispatcher.addInhibitor(async(cmd, {member, respond}) => {
+  /*client.dispatcher.addInhibitor(async(cmd, {member, respond}) => {
     let cmdBlacklist = ["help"];
-    if (cmdBlacklist.includes(cmd)) return;
+    if (cmdBlacklist.includes(cmd.name)) return true;
 
-    let djCmds = ["back","jump","leave","loop","shuffle","skip","volume"];
-    let hasPermissions = await client.modules.get("CheckPermissions")(client, member, djCmds.includes(cmd.name) ? "dj" : "default")
+    let djCmds = ["back","jump","leave","loop","shuffle","skip","volume","remove","clearqueue","stop","pause"];
+    let hasPermissions = await client.modules.get("CheckPermissions")(client, member, djCmds.includes(cmd.name) ? "dj" : "default");
 
     if (!hasPermissions) {
       respond({ content: ":x: *Insufficient permissions*", ephemeral: true });
@@ -79,7 +86,7 @@ client.on("ready", () => {
     }
 
     return true;
-  })
+  })*/
 
   GCommandsClient.on("debug", console.log);
 });

@@ -1,19 +1,23 @@
-const { MessageButton } = require("gcommands");
+const { MessageButton, MessageActionRow } = require("gcommands");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "shuffle",
     description: "Shuffle queue",
-    guildOnly: "847485277484220447",
+    guildOnly: "696461066393354301",
     aliases: ["shuf"],
+    clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {
       let msgId = Date.now();
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
 
-      let again = new MessageButton().setLabel("Again").setStyle("red").setID(`${msgId}_again`),
-          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`${msgId}_shuffleCancel`);
+      let buttonRow = new MessageActionRow()
+      let again = new MessageButton().setLabel("Again").setStyle("red").setID(`again`),
+          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`shuffleCancel`);
+      buttonRow.addComponent(again)
+      buttonRow.addComponent(cancel)
 
       // shuffle
       let shuffleIt = () => {
@@ -23,21 +27,24 @@ module.exports = {
         client.music.playing[guild.id].index = qu.findIndex((s) => s.playedAt === client.music.playing[guild.id].playedAt);
       }
 
-      respond({
+      let msg = await respond({
         content: `• Queue shuffled by ${member.user.tag}`,
-        components: [[again, cancel]]
+        components: buttonRow
       });
 
       let buttonEvent = async (button) => {
-        if (button.id.split("_")[0] === msgId.toString()) {
+        if (button.message.id === msg.id) {
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id.split("_")[1];
             
             if(buttonId == "again") {
               if (!client.music.data[guild.id].isPlaying) {
+                again.setDisabled()
+                cancel.setDisabled()
+                
                 button.edit({
                   content: "• Shuffle cancelled",
-                  components: [[again.setDisabled(), cancel.setDisabled()]]
+                  components: buttonRow
                 });
                 client.removeListener("clickButton", buttonEvent);
                 return;
@@ -47,12 +54,15 @@ module.exports = {
               shuffleIt();
               button.edit({
                 content: `• Queue shuffled again by ${button.clicker.user}`,
-                components: [[again, cancel]]
+                components: buttonRow
               });
             } else if(buttonId == "shuffleCancel") {
+              again.setDisabled()
+              cancel.setDisabled()
+              
               button.edit({
                 content: "• Shuffle cancelled",
-                components: [[again.setDisabled(), cancel.setDisabled()]]
+                components: buttonRow
               });
               client.removeListener("clickButton", buttonEvent);
             }

@@ -1,7 +1,8 @@
 const { MessageButton } = require("gcommands");
 const ytdl = require("ytdl-core");
+const ytdlErit = require("erit-ytdl");
 
-module.exports = async (client, guild, member, textChannel, video, isSkipped) => {
+module.exports = async (client, guild, member, textChannel, video, isSkipped, presetVolume, isNew) => new Promise(async (res) => {
   let connection;
   try {
     connection = await member.voice.channel.join();
@@ -29,12 +30,15 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped) =>
   client.music.playing[guild.id] = data;
   client.music.data[guild.id].isPlaying = true;
 
+  let stream = await ytdlErit(`https://www.youtube.com/watch?v=${video.id}`, { highWaterMark: 1 << 25 })
+  let streamType = "opus";
+
   let dispatcher = connection
-    .play(ytdl(`https://www.youtube.com/watch?v=${video.id}`))
+    .play(stream, {type: streamType})
     .on("finish", () => {
       let willSkip = client.music.data[guild.id].skipQueue;
       if(client.music.data[guild.id].loop && !willSkip) {
-        require("./Play.js")(client, guild, member, textChannel, video, true);
+        require("./Play.js")(client, guild, member, textChannel, video, true, dispatcher.volumeLogarithmic);
         return;
       }
       if (willSkip) data.index--;
@@ -44,12 +48,24 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped) =>
         data.index = -1;
         client.music.playing[guild.id] = data;
       } else {
-        require("./Play.js")(client, guild, member, textChannel, client.music.queue[guild.id][data.index + 1]);
+        require("./Play.js")(client, guild, member, textChannel, client.music.queue[guild.id][data.index + 1], false, dispatcher.volumeLogarithmic);
+      }
+    })
+    .on("error", err => {
+      let msg = `• There was a problem playing **${video.title}**${nextSong ? ". Skipping" : ""}`;
+      res(msg);
+      let nextSong = client.music.queue[guild.id][data.index + 1];
+      if (!isNew) textChannel.send(msg);
+      if (nextSong) {
+        require("./Play.js")(client, guild, member, textChannel, nextSong, false, dispatcher.volumeLogarithmic);
       }
     });
 
+  res();
+
+  dispatcher.setVolumeLogarithmic(presetVolume || 1);
 
   if (!isSkipped) textChannel.send(`• Started playing: **${video.title}**`)
 
-  return undefined;
-}
+  res();
+});

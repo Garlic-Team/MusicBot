@@ -1,12 +1,12 @@
-const { MessageButton } = require("gcommands");
+const { MessageButton, MessageActionRow } = require("gcommands");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "help",
     description: "All commands",
-    guildOnly: "847485277484220447",
+    guildOnly: "696461066393354301",
+    clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
-      let msgId = Date.now();
       let allcmds = client.commands.map((cmd) => `• \`${cmd.name}\``);
       
       let embed = new MessageEmbed()
@@ -20,25 +20,48 @@ module.exports = {
         for (let i = 0; true; i += max) {
           if (i >= btns.length) break;
           else {
-            final.push(btns.slice(i, i + max));
+            let slauc = btns.slice(i, i + max);
+            let row = new MessageActionRow();
+            for (let j = 0; j < slauc.length; j++) {
+              row.addComponent(slauc[j]);
+            }
+            final.push(row);
           }
         }
-        
+        // ono to musi returnovat ten row
+        // tak jak tam ale dáme víc rows
+        // to musis creatnut dalsi row ako MessageActionRow yep
+        // na dalsiu row to musi spravit MessageActionRow dalsiu
+        // ked chces 2 buttons v 1 row tak das row.addComponent(button) row.addComponent(button) a to su 2 buttons v 1 row
+        // já ale myslím víc rows
+        // no to musis dat pre kazdu row new MessageActionRow()
+        // ide aj MessageActionRow(object) a z toho to dá do action rowu ale to asi nehelplo
+        // takto ja ti pošlem object ako to musí vyzerať wait na dc
+        // takže to bude components: [[MessageActionRow, MessageActionRow]]? [MessageActionRow, MessageActionRow] iba 1x []
+        // no tak to teďka je hm
+        // na dc poslem jednu vec
+
         return final;
       }
+      
+      let buttons = client.commands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setID(`${cmd.name}`));
 
-      let buttons = client.commands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setID(`${msgId}_${cmd.name}`));
+      let msg = await respond({
+        content: embed,
+        allowedMentions: { parse: [], repliedUser: true },
+        components: parseBtns(buttons)
+      })
 
       let buttonEvent = async (button) => {
-        if (button.id.split("_")[0] === msgId.toString()) {
+        if (button.message.id === msg.id) {
           if (button.clicker.user.id === member.id) {
-            let buttonId = button.id.split("_")[1];
+            let buttonId = button.id;
             let cmd = client.commands.get(buttonId);
 
             button.edit({
               content: new MessageEmbed().setAuthor("Music Buttons | Help").setColor("#cf293f").setDescription(`${cmd.name}\n• \`${cmd.description}\``),
               components: parseBtns(buttons.map(btn => {
-                if(btn.custom_id.split("_")[1] == buttonId) btn.setDisabled()
+                if(btn.custom_id == buttonId) btn.setDisabled()
                 else btn.setDisabled(false)
                 return btn;
               })),
@@ -53,11 +76,5 @@ module.exports = {
       setTimeout(() => {
         client.removeListener("clickButton", buttonEvent);
       }, 60000);
-
-      respond({
-        content: embed,
-        allowedMentions: { parse: [], repliedUser: true },
-        components: parseBtns(buttons)
-      })
     }
 }

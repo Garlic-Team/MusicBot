@@ -1,10 +1,10 @@
-const { MessageButton } = require("gcommands");
+const { MessageButton, MessageActionRow } = require("gcommands");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "volume",
     description: "Set new volume",
-    guildOnly: "847485277484220447",
+    guildOnly: "696461066393354301",
     expectedArgs: [
       {
         name: "volume",
@@ -14,25 +14,35 @@ module.exports = {
       }
     ],
     aliases: ["vol"],
+    clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
-      let msgId = Date.now();
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
-      if (!member.voice) return error("You aren't connected to a VC");
+      if (!member.voice.channel) return error("You aren't connected to a VC");
 
       if (member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
-      let volumeButtonPlus = new MessageButton().setLabel("+ 5").setStyle("green").setID(`${msgId}_volume+`),
-          volumeButtonMinus = new MessageButton().setLabel("- 5").setStyle("red").setID(`${msgId}_volume-`)
-          volumeButtonCancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`${msgId}_volumeCancel`)
+      let buttonRow = new MessageActionRow(),
+          volumeButtonPlus = new MessageButton().setLabel("+ 5").setStyle("green").setID(`volume+`),
+          volumeButtonMinus = new MessageButton().setLabel("- 5").setStyle("red").setID(`volume-`),
+          volumeButtonCancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`volumeCancel`)
+      buttonRow.addComponent(volumeButtonPlus)
+      buttonRow.addComponent(volumeButtonMinus)
+      buttonRow.addComponent(volumeButtonCancel)
 
-      if(!args[0]) respond({content:"• Please set new volume", components:[[volumeButtonPlus, volumeButtonMinus, volumeButtonCancel]]})
+      let msg;
+      if(!args[0]) {
+        msg = await respond({
+          content:"• Please set new volume",
+          components: buttonRow
+        })
+      }
 
       let buttonEvent = async (button) => {
-        if (button.id.split("_")[0] === msgId.toString()) {
+        if (button.message.id === msg.id) {
           if (button.clicker.user.id === member.id) {
-            let buttonId = button.id.split("_")[1];
+            let buttonId = button.id;
             let nowVolume = client.music.playing[guild.id].connection.dispatcher.volumeLogarithmic * 100;
 
             let newVolume = nowVolume;
@@ -46,7 +56,7 @@ module.exports = {
               else volumeButtonMinus.setDisabled(false);
               button.edit({
                 content: `• New volume is: \`${Math.round(newVolume)}%\``,
-                components: [[volumeButtonPlus, volumeButtonMinus, volumeButtonCancel]]
+                components: buttonRow
               });
               
               client.music.playing[guild.id].connection.dispatcher.setVolumeLogarithmic(newVolume / 100);
@@ -60,16 +70,20 @@ module.exports = {
               else volumeButtonMinus.setDisabled(false);
               button.edit({
                 content: `• New volume is: \`${Math.round(newVolume)}%\``,
-                components: [[volumeButtonPlus, volumeButtonMinus, volumeButtonCancel]]
+                components: buttonRow
               });
 
               client.music.playing[guild.id].connection.dispatcher.setVolumeLogarithmic(newVolume / 100);
             } else if(buttonId == "volumeCancel") {
               client.removeListener("clickButton", buttonEvent);
 
+              volumeButtonPlus.setDisabled()
+              volumeButtonMinus.setDisabled()
+              volumeButtonCancel.setDisabled()
+
               button.edit({
                 content: `• Final volume is: \`${Math.round(newVolume)}%\``,
-                components: [[volumeButtonPlus.setDisabled(), volumeButtonMinus.setDisabled(), volumeButtonCancel.setDisabled()]]
+                components: buttonRow
               });
             }
           } else {
