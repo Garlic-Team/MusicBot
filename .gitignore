@@ -3,3 +3,5 @@ node_modules
 package-lock.json
 *.draw
 *.replit
+*.mp4
+topgg.md
