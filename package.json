@@ -1,5 +1,5 @@
 {
-  "name": "Music-bot-with-buttons",
+  "name": "music-bot-with-buttons",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "erit-ytdl": "^0.1.3",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.3.0",
-    "gcommands": "github:Garlic-Team/GCommands#dev",
+    "gcommands": "^4.1.2",
     "opusscript": "0.0.8",
     "solenolyrics": "^5.0.0",
     "youtube-sr": "^4.1.1",
