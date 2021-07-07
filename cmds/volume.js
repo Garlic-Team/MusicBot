@@ -46,6 +46,7 @@ module.exports = {
 
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
+          button.defer();
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id;
             let nowVolume = client.music.playing[guild.id].connection.dispatcher.volumeLogarithmic * 100;
@@ -91,8 +92,6 @@ module.exports = {
                 components: buttonRow
               });
             }
-          } else {
-            button.defer();
           }
         };
       }

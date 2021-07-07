@@ -6,7 +6,7 @@ module.exports = {
     description: "All commands",
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
-      let allcmds = client.commands.map((cmd) => `• \`${cmd.name}\``);
+      let allcmds = client.gcommands.map((cmd) => `• \`${cmd.name}\``);
       
       let embed = new MessageEmbed()
         .setAuthor("Music Buttons | Help")
@@ -43,7 +43,7 @@ module.exports = {
         return final;
       }
       
-      let buttons = client.commands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setID(`${cmd.name}`));
+      let buttons = client.gcommands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setID(`${cmd.name}`));
 
       let msg = await respond({
         content: embed,
@@ -53,9 +53,10 @@ module.exports = {
 
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
+          button.defer();
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id;
-            let cmd = client.commands.get(buttonId);
+            let cmd = client.gcommands.get(buttonId);
 
             button.edit({
               content: new MessageEmbed().setAuthor("Music Buttons | Help").setColor("#cf293f").setDescription(`${cmd.name}\n• \`${cmd.description}\``),
@@ -66,8 +67,6 @@ module.exports = {
               })),
               edited: false
             })
-          } else {
-            button.defer();
           }
         };
       }      

@@ -27,6 +27,7 @@ module.exports = {
 
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
+          button.defer();
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id;
 
@@ -56,8 +57,6 @@ module.exports = {
               components: buttonRow,
               edited: false
             });
-          } else {
-            button.defer();
           }
         };
       }

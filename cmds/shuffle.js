@@ -33,6 +33,7 @@ module.exports = {
 
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
+          button.defer();
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id.split("_")[1];
             
@@ -65,8 +66,6 @@ module.exports = {
               });
               client.removeListener("clickButton", buttonEvent);
             }
-          } else {
-            button.defer();
           }
         };
       }

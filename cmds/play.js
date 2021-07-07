@@ -30,11 +30,10 @@ module.exports = {
       
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
+          button.defer();
           if (button.clicker.member.id === member.id) {
             let video = videos[parseInt(button.id)];
             playAudio(button, video);
-          } else {
-            button.defer();
           }
         };
       }

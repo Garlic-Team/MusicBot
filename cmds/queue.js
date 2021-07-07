@@ -73,6 +73,7 @@ module.exports = {
 
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
+          button.defer();
           if (button.clicker.user.id === member.id) {
             if (button.id === "pageL" && page > 0) page--;
             if (button.id === "pageR" && page < pages.length) page++;
@@ -107,8 +108,6 @@ module.exports = {
               allowedMentions: { parse: [], repliedUser: true },
               components: genRow()
             });
-          } else {
-            button.defer();
           }
         };
       }

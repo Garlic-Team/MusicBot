@@ -51,9 +51,9 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped, pr
       }
     })
     .on("error", err => {
+            let nextSong = client.music.queue[guild.id][data.index + 1];
       let msg = `• There was a problem playing **${video.title}**${nextSong ? ". Skipping" : ""}`;
       res(msg);
-      let nextSong = client.music.queue[guild.id][data.index + 1];
       if (!isNew) textChannel.send(msg);
       if (nextSong) {
         require("./Play.js")(client, guild, member, textChannel, nextSong, false, dispatcher.volumeLogarithmic);
