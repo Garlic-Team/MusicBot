@@ -36,8 +36,14 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped, pr
     .play(stream)
     .on("finish", () => {
       let willSkip = client.music.data[guild.id].skipQueue;
-      if(client.music.data[guild.id].loop && !willSkip) {
-        require("./Play.js")(client, guild, member, textChannel, video, true, dispatcher.volumeLogarithmic);
+      if(client.music.data[guild.id].loopqueue && !willSkip) {
+        client.music.queue[guild.id].push(client.music.queue[guild.id][0]);
+        client.music.queue[guild.id].shift()
+        require("./Play.js")(client, guild, member, textChannel, client.music.queue[guild.id][0], true, dispatcher.volumeLogarithmic);
+        return;
+      }
+      if (client.music.data[guild.id].loop && !willSkip) {
+        require("./Play.js")(client, guild, member, textChannel, client.music.queue[guild.id][0], true, dispatcher.volumeLogarithmic);
         return;
       }
       if (willSkip) data.index--;
