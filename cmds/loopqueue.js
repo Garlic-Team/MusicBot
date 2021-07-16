@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "loop",
-    description: "Enable/disable loop",
+    description: "Enable/disable queue loop",
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
@@ -26,7 +26,7 @@ module.exports = {
         components: buttonRow
       })
 
-      if (client.music.data[guild.id].loop) enable.setDisabled();
+      if (client.music.data[guild.id].loopqueue) enable.setDisabled();
       else disable.setDisabled();
 
       let buttonEvent = async (button) => {
@@ -35,28 +35,28 @@ module.exports = {
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id;
 
-            if(buttonId == "enableLoop" && client.music.playing[guild.id].connection) {
+            if(buttonId == "enableQueueLoop" && client.music.playing[guild.id].connection) {
               client.music.data[guild.id].loop = true
               enable.setDisabled()
               disable.setDisabled(false)
-            } else if(buttonId == "disableLoop" && client.music.playing[guild.id].connection) {
+            } else if(buttonId == "disableQueueLoop" && client.music.playing[guild.id].connection) {
               client.music.data[guild.id].loop = false
               disable.setDisabled()
               enable.setDisabled(false)
-            } else if(buttonId == "loopCancel") {
+            } else if(buttonId == "queueLoopCancel") {
               enable.setDisabled()
               disable.setDisabled()
               cancel.setDisabled()
 
               return button.edit({
-                content: `• The loop system turned ${client.music.data[guild.id].loop ? "on" : "off"}`,
+                content: `• The queue loop system turned ${client.music.data[guild.id].loopqueue ? "on" : "off"}`,
                 components: buttonRow,
                 edited: false
               })
             }
 
             button.edit({
-              content: `• The loop system turned ${client.music.data[guild.id].loop ? "on" : "off"}`,
+              content: `• The queue loop system turned ${client.music.data[guild.id].loopqueue ? "on" : "off"}`,
               components: buttonRow,
               edited: false
             });
