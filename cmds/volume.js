@@ -58,8 +58,6 @@ module.exports = {
 
               if (newVolume >= 100) volumeButtonPlus.setDisabled(true);
               else volumeButtonPlus.setDisabled(false);
-              if (newVolume <= 0) volumeButtonMinus.setDisabled(true);
-              else volumeButtonMinus.setDisabled(false);
               button.edit({
                 content: `• New volume is: \`${Math.round(newVolume)}%\``,
                 components: buttonRow
@@ -69,9 +67,6 @@ module.exports = {
             } else if(buttonId == "volume-") {
               newVolume -= 5;
               if (newVolume < 0) newVolume = 0;
-
-              if (newVolume >= 100) volumeButtonPlus.setDisabled(true);
-              else volumeButtonPlus.setDisabled(false);
               if (newVolume <= 0) volumeButtonMinus.setDisabled(true);
               else volumeButtonMinus.setDisabled(false);
               button.edit({
