@@ -64,14 +64,14 @@ module.exports = {
                 components: buttonRow,
                 edited: false
               })
-            }
+            }*/
 
             button.edit({
               content: `• The loop system turned ${client.music.data[guild.id].loop ? "on" : "off"}`,
               components: buttonRow,
               edited: false
             });
-          }*/
+          }
         };
       }
       client.on("clickButton", buttonEvent);
