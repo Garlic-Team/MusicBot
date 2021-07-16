@@ -43,7 +43,7 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped, pr
         return;
       }
       if (client.music.data[guild.id].loop && !willSkip) {
-        require("./Play.js")(client, guild, member, textChannel, client.music.queue[guild.id][0], true, dispatcher.volumeLogarithmic);
+        require("./Play.js")(client, guild, member, textChannel, video, true, dispatcher.volumeLogarithmic);
         return;
       }
       if (willSkip) data.index--;
