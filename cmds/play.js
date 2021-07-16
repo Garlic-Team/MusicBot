@@ -23,7 +23,7 @@ module.exports = {
       if (!member.voice.channel) return error("Please connect to a voice channel");
       if (client.music.playing[guild.id].channel && member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
-      let term = args[0] ? args[0].toString() : undefined
+      let term = args[0] ? args.slice(0).join(" ") : undefined
       if(!term) return error("Please provide a search term.");
 
       let videos;
