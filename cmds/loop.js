@@ -14,15 +14,15 @@ module.exports = {
       if (member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
       let buttonRow = new MessageActionRow()
-      let enable = new MessageButton().setLabel("Enable").setStyle("green").setID(`enableLoop`),
-        disable = new MessageButton().setLabel("Disable").setStyle("red").setID(`disableLoop`),
-        cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`loopCancel`);
+      let enable = new MessageButton().setLabel("Single Loop").setStyle("blurple").setID(`enableLoop`),
+        disable = new MessageButton().setLabel("Queue Loop").setStyle("blurple").setID(`enableQueueLoop`),
+        cancel = new MessageButton().setLabel("Disable").setStyle("red").setID(`disableLoop`);
       buttonRow.addComponent(enable)
       buttonRow.addComponent(disable)
       buttonRow.addComponent(cancel)
       
       var msg = await respond({
-        content: "• Turn the loop system on/off.",
+        content: "• Turn the loop system queue type/single type/off.",
         components: buttonRow
       })
 
@@ -37,13 +37,24 @@ module.exports = {
 
             if(buttonId == "enableLoop" && client.music.playing[guild.id].connection) {
               client.music.data[guild.id].loop = true
-              enable.setDisabled()
-              disable.setDisabled(false)
+              client.music.data[guild.id].loopqueue = false;
+              enable.setDisabled();
+              disable.setDisabled(false);
+              cancel.setDisabled(false);
             } else if(buttonId == "disableLoop" && client.music.playing[guild.id].connection) {
               client.music.data[guild.id].loop = false
-              disable.setDisabled()
-              enable.setDisabled(false)
-            } else if(buttonId == "loopCancel") {
+              client.music.data[guild.id].loopqueue = false;
+              cancel.setDisabled();
+              disable.setDisabled(false);
+              enable.setDisabled(false);
+            } else if(buttonId == "enableQueueLoop" && client.music.playing[guild.id].connection) {
+                client.music.data[guild.id].loop = false;
+                client.music.data[guild.id].loopqueue = true;
+                disable.setDisabled();
+                enable.setDisabled(false);
+                cancel.setDisabled(false);
+            }
+            /*} else if(buttonId == "loopCancel") {
               enable.setDisabled()
               disable.setDisabled()
               cancel.setDisabled()
@@ -60,7 +71,7 @@ module.exports = {
               components: buttonRow,
               edited: false
             });
-          }
+          }*/
         };
       }
       client.on("clickButton", buttonEvent);
