@@ -19,13 +19,19 @@ module.exports = {
       buttonRow.addComponent(cancel)
 
       // shuffle
-      let shuffleIt = () => {
+      /*let shuffleIt = () => {
         client.music.queue[guild.id] = client.music.queue[guild.id].sort(() => Math.floor(Math.random() * 10) > 5 ? -1 : 1);
         let qu = client.music.queue[guild.id];
 
         client.music.playing[guild.id].index = qu.findIndex((s) => s.playedAt === client.music.playing[guild.id].playedAt);
+      }*/
+      let shuffleIt = () => {
+        for (let i = client.music.queue[guild.id].length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [client.music.queue[guild.id][i], client.music.queue[guild.id][j]] = [client.music.queue[guild.id][j], client.music.queue[guild.id][i]];
+        }
       }
-
+      shuffleIt();
       let msg = await respond({
         content: `• Queue shuffled by ${member.user.tag}`,
         components: buttonRow
@@ -34,6 +40,12 @@ module.exports = {
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
           button.defer();
+          let ShuffleIt = () => {
+            for (let i = client.music.queue[guild.id].length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [client.music.queue[guild.id][i], client.music.queue[guild.id][j]] = [client.music.queue[guild.id][j], client.music.queue[guild.id][i]];
+            }
+          }
           if (button.clicker.user.id === member.id) {
             let buttonId = button.id.split("_")[1];
             
@@ -51,7 +63,7 @@ module.exports = {
               }
 
               // shuffle
-              shuffleIt();
+              ShuffleIt();
               button.edit({
                 content: `• Queue shuffled again by ${button.clicker.user}`,
                 components: buttonRow
