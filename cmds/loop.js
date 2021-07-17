@@ -67,7 +67,7 @@ module.exports = {
             }*/
 
             button.edit({
-              content: `• The loop system turned ${client.music.data[guild.id].loop ? " on Single Loop" : client.music.data[guild.id].loopqueue ? "on Queue Loop" : "off"}`,
+              content: `• The loop system turned ${client.music.data[guild.id].loop ? "on Single Loop" : client.music.data[guild.id].loopqueue ? "on Queue Loop" : "off"}`,
               components: buttonRow,
               edited: false
             });
