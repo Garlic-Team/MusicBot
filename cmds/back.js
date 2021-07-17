@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "back",
-    description: "Skips the current song",
+    description: "Jump back to previous song",
     alises: ["bk","previous","prev","pr"],
     clientRequiredPermissions: ["SEND_MESSAGES"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
@@ -17,6 +17,6 @@ module.exports = {
       let response = client.modules.get("Skip")(client, member, -1);
       if (response) return error(response);
 
-      respond({ content: "• Skipped!", ephemeral: true });
+      respond({ content: "• Getted back!", ephemeral: true });
     }
 }
