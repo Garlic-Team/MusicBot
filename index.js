@@ -89,6 +89,7 @@ client.on("ready", () => {
   })*/
 
   GCommandsClient.on("debug", console.log);
+  GCommandsClient.on("log", console.log);
 });
 
 client.on("guildCreate", updateGuildQueue);
