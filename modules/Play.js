@@ -33,7 +33,7 @@ module.exports = async (client, guild, member, textChannel, video, isSkipped, pr
   let streamType = "opus";
 
   let dispatcher = connection
-    .play(stream)
+    .play(stream, { volume: presetVolume })
     .on("finish", () => {
       let willSkip = client.music.data[guild.id].skipQueue;
       if(client.music.data[guild.id].loopqueue && !willSkip) {
