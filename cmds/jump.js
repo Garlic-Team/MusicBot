@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "jump",
     description: "Jumps to a song",
-    expectedArgs: [
+    args: [
       {
         name: "position",
         description: "The position to jump to",
