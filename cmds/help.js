@@ -58,14 +58,13 @@ module.exports = {
             let buttonId = button.id;
             let cmd = client.gcommands.get(buttonId);
 
-            button.edit({
+            button.message.edit({
               content: new MessageEmbed().setAuthor("Music Buttons | Help").setColor("#cf293f").setDescription(`${cmd.name}\n• \`${cmd.description}\``),
               components: parseBtns(buttons.map(btn => {
                 if(btn.custom_id == buttonId) btn.setDisabled()
                 else btn.setDisabled(false)
                 return btn;
               })),
-              edited: false
             })
           }
         };
