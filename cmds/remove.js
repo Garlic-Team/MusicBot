@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "remove",
     description: "Removes a song from the queue",
-    expectedArgs: [
+    args: [
       {
         name: "position",
         description: "The position to remove",
