@@ -48,9 +48,8 @@ let updateGuildQueue = (ready) => {
 }
 
 /**
- * Using GCommands v4 (dev build)
+ * Using GCommands v5
  */
-client.setMaxListeners(50);
 client.on("ready", () => {
   updateGuildQueue(true);
   const GCommandsClient = new GCommands(client, {
@@ -61,7 +60,7 @@ client.on("ready", () => {
         slash: 'both',
         prefix: '!'
     },
-    defaultCooldown: 3,
+    defaultCooldown: "3s"
   });
   client.user.setPresence({
     activity: {
@@ -89,6 +88,7 @@ client.on("ready", () => {
   })*/
 
   GCommandsClient.on("debug", console.log);
+  GCommandsClient.on("log", console.log);
 });
 
 client.on("guildCreate", updateGuildQueue);
