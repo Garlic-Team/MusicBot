@@ -7,7 +7,7 @@ const DeepCopy = require("../utils/DeepCopy.js");
 module.exports = {
     name: "play",
     description: "Play music",
-    expectedArgs: [
+    args: [
       {
         name: "search",
         description: "Search term (accepts YouTube search, YouTube URLs)",
