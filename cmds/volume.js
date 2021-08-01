@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "volume",
     description: "Set new volume",
-    expectedArgs: [
+    args: [
       {
         name: "volume",
         description: "Volume (integer)",
