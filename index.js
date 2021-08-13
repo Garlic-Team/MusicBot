@@ -1,7 +1,7 @@
 const express=require("express"),app=express();app.get("/",function(e,p){p.send("Hello World")}),app.listen(3e3);
 
 const { Client, Collection } = require("discord.js"),
-  { GCommands, Color } = require("gcommands"),
+  { GCommandsClient, Color } = require("gcommands"),
   fs = require("fs");
 
 const client = new Client();
@@ -53,14 +53,15 @@ let updateGuildQueue = (ready) => {
 client.setMaxListeners(50);
 client.on("ready", () => {
   updateGuildQueue(true);
-  const GCommandsClient = new GCommands(client, {
+  const GCommands = new GCommandsClient(client, {
     cmdDir: "cmds/",
     unkownCommandMessage: false,
     language: "english",
-    slash: {
-        slash: 'both',
-        prefix: '!'
-    },
+    commands: {
+      slash: true,
+      context: true,
+      prefix: '!'
+    }
     defaultCooldown: 3,
   });
   client.user.setPresence({
@@ -88,8 +89,8 @@ client.on("ready", () => {
     return true;
   })*/
 
-  GCommandsClient.on("debug", console.log);
-  GCommandsClient.on("log", console.log);
+  GCommands.on("debug", console.log);
+  GCommands.on("log", console.log);
 });
 
 client.on("guildCreate", updateGuildQueue);
