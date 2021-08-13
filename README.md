@@ -19,7 +19,7 @@
  - Node `12.x+`
  - `discord.js 12` npm
  - FFmpeg `ffmpeg-static` npm
- - `gcommands v4` npm
+ - `gcommands v6` npm
  - `opusscript` npm
  - `solenolyrics` npm
  - `youtube-sr` npm
