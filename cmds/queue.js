@@ -51,10 +51,10 @@ module.exports = {
         .setDescription(`\`\`\`nim\n${pages[page].join("\n")}\`\`\``)
         .setColor("#cf293f");
 
-      let skipButton = new MessageButton().setLabel("Skip").setEmoji("<:right:847841719303012403>").setStyle("red").setID(`skip`).setDisabled(isEmpty);
-      let pageL = new MessageButton().setLabel("Previous Page").setEmoji("<:left:847841719327260682>").setStyle("gray").setID(`pageL`).setDisabled(page === 0);
-      let pageR = new MessageButton().setLabel("Next Page").setEmoji("<:right:847841719303012403>").setStyle("gray").setID(`pageR`).setDisabled(page === pages.length - 1);
-      let cancel = new MessageButton().setLabel("Cancel").setStyle("blurple").setID(`cancel`);
+      let skipButton = new MessageButton().setLabel("Skip").setEmoji("<:right:847841719303012403>").setStyle("red").setCustomId(`skip`).setDisabled(isEmpty);
+      let pageL = new MessageButton().setLabel("Previous Page").setEmoji("<:left:847841719327260682>").setStyle("gray").setCustomId(`pageL`).setDisabled(page === 0);
+      let pageR = new MessageButton().setLabel("Next Page").setEmoji("<:right:847841719303012403>").setStyle("gray").setCustomId(`pageR`).setDisabled(page === pages.length - 1);
+      let cancel = new MessageButton().setLabel("Cancel").setStyle("blurple").setCustomId(`cancel`);
 
       let genRow = () => {
         let buttonRow = new MessageActionRow();
@@ -74,11 +74,11 @@ module.exports = {
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
           button.defer();
-          if (button.clicker.user.id === member.id) {
-            if (button.id === "pageL" && page > 0) page--;
-            if (button.id === "pageR" && page < pages.length) page++;
-            if (button.id === "skip" && client.music.playing[guild.id].connection) client.modules.get("Skip")(client, button.clicker.member);
-            if (button.id === "cancel") {
+          if (button.user.id === member.id) {
+            if (button.customId === "pageL" && page > 0) page--;
+            if (button.customId === "pageR" && page < pages.length) page++;
+            if (button.customId === "skip" && client.music.playing[guild.id].connection) client.modules.get("Skip")(client, button.member);
+            if (button.customId === "cancel") {
               skipButton.setDisabled()
               pageL.setDisabled()
               pageR.setDisabled()
