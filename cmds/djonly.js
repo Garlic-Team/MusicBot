@@ -10,9 +10,9 @@ module.exports = {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
 
       let buttonRow = new MessageActionRow()
-      let enable = new MessageButton().setLabel("Enable").setStyle("green").setCustomID(`enableDJ`),
-          disable = new MessageButton().setLabel("Disable").setStyle("red").setCustomID(`disableDJ`),
-          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setCustomID(`DJCancel`);
+      let enable = new MessageButton().setLabel("Enable").setStyle("green").setCustomId(`enableDJ`),
+          disable = new MessageButton().setLabel("Disable").setStyle("red").setCustomId(`disableDJ`),
+          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setCustomId(`DJCancel`);
       buttonRow.addComponent(enable)
       buttonRow.addComponent(disable)
       buttonRow.addComponent(cancel)
