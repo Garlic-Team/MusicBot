@@ -43,7 +43,7 @@ module.exports = {
         return final;
       }
       
-      let buttons = client.gcommands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setCustomID(`${cmd.name}`));
+      let buttons = client.gcommands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setCustomId(`${cmd.name}`));
 
       let msg = await respond({
         content: embed,
