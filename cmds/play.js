@@ -31,8 +31,8 @@ module.exports = {
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
           button.defer();
-          if (button.clicker.member.id === member.id) {
-            let video = videos[parseInt(button.id)];
+          if (button.user.id === member.id) {
+            let video = videos[parseInt(button.customId)];
             playAudio(button, video);
           }
         };
@@ -79,7 +79,7 @@ module.exports = {
             // Add to Queue
             button.edit({
               content: embed,
-              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Added to Queue").setStyle("gray").setID("queuebutton").setDisabled())
+              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Added to Queue").setStyle("gray").setCustomId("queuebutton").setDisabled())
             });
           } else {
             // Play the Music
@@ -88,7 +88,7 @@ module.exports = {
 
             button.edit({
               content: embed,
-              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Playing").setStyle("gray").setID("playingbutton").setDisabled())
+              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Playing").setStyle("gray").setCustomId("playingbutton").setDisabled())
             });
           }
         } else if (Array.isArray(video.videos)) {
@@ -116,7 +116,7 @@ module.exports = {
             // Add to Queue
             respond({
               content: playlistEmbed,
-              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Added to Queue").setStyle("gray").setID("queuebutton").setDisabled())
+              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Added to Queue").setStyle("gray").setCustomId("queuebutton").setDisabled())
             });
           } else {
             // Play the Music
@@ -125,7 +125,7 @@ module.exports = {
 
             respond({
               content: playlistEmbed,
-              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Playing").setStyle("gray").setID("playingbutton").setDisabled())
+              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Playing").setStyle("gray").setCustomId("playingbutton").setDisabled())
             });
           }
         } else if (video) {
@@ -142,7 +142,7 @@ module.exports = {
             // Add to Queue
             respond({
               content: embed,
-              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Added to Queue").setStyle("gray").setID("queuebutton").setDisabled())
+              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Added to Queue").setStyle("gray").setCustomId("queuebutton").setDisabled())
             });
           } else {
             // Play the Music
@@ -151,7 +151,7 @@ module.exports = {
 
             respond({
               content: embed,
-              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Playing").setStyle("gray").setID("playingbutton").setDisabled()),
+              components: new MessageActionRow().addComponent(new MessageButton().setLabel("Playing").setStyle("gray").setCustomId("playingbutton").setDisabled()),
             });
           }
         }
@@ -182,7 +182,7 @@ module.exports = {
 
       let buttonRow = new MessageActionRow()
 
-      let buttons = vids.map((vid, vidY) => buttonRow.addComponent(new MessageButton().setStyle("red").setLabel(vidY + 1).setID(`${vidY}`)));
+      let buttons = vids.map((vid, vidY) => buttonRow.addComponent(new MessageButton().setStyle("red").setLabel(vidY + 1).setCustomId(`${vidY}`)));
         buttonRow.toJSON()
 
       let emb = new MessageEmbed().setColor("#7289DA").setTitle(`${host} | Search Results`).setDescription(vids.map((vid, vidY) => `**\`${vidY + 1})\`** [${vid.title}](https://www.youtube.com/watch?v=${vid.id})`).join("\n"));
