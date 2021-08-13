@@ -14,9 +14,9 @@ module.exports = {
       if (member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
       let buttonRow = new MessageActionRow()
-      let enable = new MessageButton().setLabel("Single Loop").setStyle("blurple").setID(`enableLoop`),
-        disable = new MessageButton().setLabel("Queue Loop").setStyle("blurple").setID(`enableQueueLoop`),
-        cancel = new MessageButton().setLabel("Disable").setStyle("red").setID(`disableLoop`);
+      let enable = new MessageButton().setLabel("Single Loop").setStyle("blurple").setCustomID(`enableLoop`),
+        disable = new MessageButton().setLabel("Queue Loop").setStyle("blurple").setCustomID(`enableQueueLoop`),
+        cancel = new MessageButton().setLabel("Disable").setStyle("red").setCustomID(`disableLoop`);
       buttonRow.addComponent(enable)
       buttonRow.addComponent(disable)
       buttonRow.addComponent(cancel)
@@ -32,8 +32,8 @@ module.exports = {
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
           button.defer();
-          if (button.clicker.user.id === member.id) {
-            let buttonId = button.id;
+          if (button.user.id === member.id) {
+            let buttonId = button.customId;
 
             if(buttonId == "enableLoop" && client.music.playing[guild.id].connection) {
               client.music.data[guild.id].loop = true
