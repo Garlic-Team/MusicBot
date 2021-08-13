@@ -43,7 +43,7 @@ module.exports = {
         return final;
       }
       
-      let buttons = client.gcommands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setID(`${cmd.name}`));
+      let buttons = client.gcommands.map((cmd) => new MessageButton().setStyle("red").setLabel(cmd.name).setCustomID(`${cmd.name}`));
 
       let msg = await respond({
         content: embed,
@@ -54,14 +54,14 @@ module.exports = {
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
           button.defer();
-          if (button.clicker.user.id === member.id) {
-            let buttonId = button.id;
+          if (button.user.id === member.id) {
+            let buttonId = button.customId;
             let cmd = client.gcommands.get(buttonId);
 
             button.edit({
               content: new MessageEmbed().setAuthor("Music Buttons | Help").setColor("#cf293f").setDescription(`${cmd.name}\n• \`${cmd.description}\``),
               components: parseBtns(buttons.map(btn => {
-                if(btn.custom_id == buttonId) btn.setDisabled()
+                if(btn.customId == buttonId) btn.setDisabled()
                 else btn.setDisabled(false)
                 return btn;
               })),
