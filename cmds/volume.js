@@ -23,9 +23,9 @@ module.exports = {
       if (member.voice.channel.id !== client.music.playing[guild.id].channel.id) return error("The bot is in a different VC");
 
       let buttonRow = new MessageActionRow(),
-          volumeButtonPlus = new MessageButton().setLabel("+ 5").setStyle("green").setID(`volume+`),
-          volumeButtonMinus = new MessageButton().setLabel("- 5").setStyle("red").setID(`volume-`),
-          volumeButtonCancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`volumeCancel`)
+          volumeButtonPlus = new MessageButton().setLabel("+ 5").setStyle("green").setCustomId(`volume+`),
+          volumeButtonMinus = new MessageButton().setLabel("- 5").setStyle("red").setCustomId(`volume-`),
+          volumeButtonCancel = new MessageButton().setLabel("Cancel").setStyle("red").setCustomId(`volumeCancel`)
       buttonRow.addComponent(volumeButtonPlus)
       buttonRow.addComponent(volumeButtonMinus)
       buttonRow.addComponent(volumeButtonCancel)
@@ -47,8 +47,8 @@ module.exports = {
       let buttonEvent = async (button) => {
         if (button.message.id === msg.id) {
           button.defer();
-          if (button.clicker.user.id === member.id) {
-            let buttonId = button.id;
+          if (button.user.id === member.id) {
+            let buttonId = button.customId;
             let nowVolume = client.music.playing[guild.id].connection.dispatcher.volumeLogarithmic * 100;
 
             let newVolume = nowVolume;
