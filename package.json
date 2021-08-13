@@ -15,7 +15,7 @@
     "erit-ytdl": "^0.1.3",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.3.0",
-    "gcommands": "^4.3.0",
+    "gcommands": "^6.2.6",
     "opusscript": "0.0.8",
     "solenolyrics": "^5.0.0",
     "youtube-sr": "^4.1.1",
