@@ -13,8 +13,8 @@ module.exports = {
       if (!client.music.data[guild.id].isPlaying) return error("I'm not playing anything");
 
       let buttonRow = new MessageActionRow()
-      let again = new MessageButton().setLabel("Again").setStyle("red").setID(`again`),
-          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setID(`shuffleCancel`);
+      let again = new MessageButton().setLabel("Again").setStyle("red").setCustomId(`again`),
+          cancel = new MessageButton().setLabel("Cancel").setStyle("red").setCustomId(`shuffleCancel`);
       buttonRow.addComponent(again)
       buttonRow.addComponent(cancel)
 
@@ -46,8 +46,8 @@ module.exports = {
               [client.music.queue[guild.id][i], client.music.queue[guild.id][j]] = [client.music.queue[guild.id][j], client.music.queue[guild.id][i]];
             }
           }
-          if (button.clicker.user.id === member.id) {
-            let buttonId = button.id.split("_")[1];
+          if (button.user.id === member.id) {
+            let buttonId = button.customId.split("_")[1];
             
             if(buttonId == "again") {
               if (!client.music.data[guild.id].isPlaying) {
