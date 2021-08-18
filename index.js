@@ -1,10 +1,40 @@
 const express=require("express"),app=express();app.get("/",function(e,p){p.send("Hello World")}),app.listen(3e3);
 
-const { Client, Collection } = require("discord.js"),
+const { Collection } = require("discord.js"),
   { GCommandsClient, Color } = require("gcommands"),
   fs = require("fs");
 
-const client = new Client();
+const client = new GCommandsClient({
+    cmdDir: "cmds/",
+    unkownCommandMessage: false,
+    language: "english",
+    commands: {
+      slash: true,
+      context: true,
+      prefix: '!'
+    },
+    defaultCooldown: 3
+  });
+
+  /*client.dispatcher.addInhibitor(async(cmd, {member, respond}) => {
+    let cmdBlacklist = ["help"];
+    if (cmdBlacklist.includes(cmd.name)) return true;
+
+    let djCmds = ["back","jump","leave","loop","shuffle","skip","volume","remove","clearqueue","stop","pause"];
+    let hasPermissions = await client.modules.get("CheckPermissions")(client, member, djCmds.includes(cmd.name) ? "dj" : "default");
+
+    if (!hasPermissions) {
+      respond({ content: ":x: *Insufficient permissions*", ephemeral: true });
+      return false;
+    } else {
+      return true;
+    }
+
+    return true;
+  })*/
+
+  client.on("debug", console.log);
+  client.on("log", console.log)
 
 client.music = {
   queue: {},
@@ -53,17 +83,6 @@ let updateGuildQueue = (ready) => {
 client.setMaxListeners(50);
 client.on("ready", () => {
   updateGuildQueue(true);
-  const GCommands = new GCommandsClient(client, {
-    cmdDir: "cmds/",
-    unkownCommandMessage: false,
-    language: "english",
-    commands: {
-      slash: true,
-      context: true,
-      prefix: '!'
-    }
-    defaultCooldown: 3,
-  });
   client.user.setPresence({
     activity: {
       type: "COMPETING",
@@ -71,26 +90,6 @@ client.on("ready", () => {
     },
     status: "idle"
   });
-
-  /*client.dispatcher.addInhibitor(async(cmd, {member, respond}) => {
-    let cmdBlacklist = ["help"];
-    if (cmdBlacklist.includes(cmd.name)) return true;
-
-    let djCmds = ["back","jump","leave","loop","shuffle","skip","volume","remove","clearqueue","stop","pause"];
-    let hasPermissions = await client.modules.get("CheckPermissions")(client, member, djCmds.includes(cmd.name) ? "dj" : "default");
-
-    if (!hasPermissions) {
-      respond({ content: ":x: *Insufficient permissions*", ephemeral: true });
-      return false;
-    } else {
-      return true;
-    }
-
-    return true;
-  })*/
-
-  GCommands.on("debug", console.log);
-  GCommands.on("log", console.log);
 });
 
 client.on("guildCreate", updateGuildQueue);
