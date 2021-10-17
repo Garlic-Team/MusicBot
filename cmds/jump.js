@@ -12,7 +12,7 @@ module.exports = {
         required: true
       }
     ],
-    alises: ["j"],
+    aliases: ["j"],
     clientRequiredPermissions: ["SEND_MESSAGES","CONNECT","SPEAK"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
