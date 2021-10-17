@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "clearqueue",
     description: "Clears the queue",
-    alises: ["clr","clear","clearq","clrqueue","deletequeue","delqueue","clearq","deleteq"],
+    aliases: ["clr","clear","clearq","clrqueue","deletequeue","delqueue","clearq","deleteq"],
     clientRequiredPermissions: ["SEND_MESSAGES"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
