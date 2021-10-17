@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     name: "skip",
     description: "Skips the current song",
-    alises: ["sk","n"],
+    aliases: ["sk","n"],
     clientRequiredPermissions: ["SEND_MESSAGES"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
