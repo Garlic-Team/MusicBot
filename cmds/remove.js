@@ -12,7 +12,7 @@ module.exports = {
         required: true
       }
     ],
-    alises: ["rem","re"],
+    aliases: ["rem","re"],
     clientRequiredPermissions: ["SEND_MESSAGES","EMBED_LINKS"],
     run: async({client, interaction, respond, guild, edit, member}, args) => {
       let error = (c) => respond({ content: `:x: *${c}*`, ephemeral: true });
