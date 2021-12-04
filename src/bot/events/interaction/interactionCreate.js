@@ -16,6 +16,7 @@ class Interaction extends Event {
             const videos = await search(query, 25);
 
             interaction.respond(videos);
+            return;
         }
     } 
 }

@@ -25,10 +25,10 @@ class Play extends Command {
 
         let query = args.getString('query');
 
-        if(!isUrl(query)) query = (await search(query, 1))[0].value;
-        if(!query) return respond({ content: `I didn't find any music. Sorry...`, ephemeral: true });
-        
         interaction.deferReply();
+
+        if(!isUrl(query)) query = (await search(query, 1))[0].value;
+        if(!query) return interaction.editReply({ content: `I didn't find any music. Sorry...`, ephemeral: true });
 
         const video = await getVideo(query);
         Player.play(client, guild.id, member.voice.channel.id, video);

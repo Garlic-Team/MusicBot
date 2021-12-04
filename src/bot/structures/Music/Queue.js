@@ -1,5 +1,5 @@
 const { getVoiceConnection, createAudioResource, StreamType } = require("@discordjs/voice");
-const ytdl = require('ytdl-core');
+const ytdl = require('discord-ytdl-core');
 
 class Queue {
     constructor(options) {
@@ -14,9 +14,9 @@ class Queue {
     }
 
     async play() {
-        const stream = await ytdl(this.songs[0].url, { filter: 'audioonly' });
+        const stream = await ytdl(this.songs[0].url, this.songs[0].live ? { opusEncoded: true, isLive: true, quality: 'highestaudio', highWaterMark: 1<<25 } : { filter: 'audioonly', opusEncoded: true, quality: 'highestaudio', highWaterMark: 1<<25 });
 
-        const resource = createAudioResource(stream, { inputType: StreamType.Arbitrary, inlineVolume: true });
+        const resource = createAudioResource(stream, { inputType: StreamType.Opus, inlineVolume: true });
         const connection = getVoiceConnection(this.guildId);
         const player = connection.state.subscription.player;
 

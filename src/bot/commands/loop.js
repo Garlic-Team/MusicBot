@@ -10,10 +10,10 @@ class Loop extends Command {
         })
     }
 
-    generateRow() {
-        const enable = new MessageButton().setLabel("Enable").setStyle("SUCCESS").setCustomId(`enableLoop`);
-        const disable = new MessageButton().setLabel("Disable").setStyle("DANGER").setCustomId(`disableLoop`);
-        const cancel = new MessageButton().setLabel("Cancel").setStyle("SECONDARY").setCustomId(`loopCancel`);
+    generateRow(disabled) {
+        const enable = new MessageButton().setLabel("Enable").setStyle("SUCCESS").setCustomId(`enableLoop`).setDisabled(disabled ?? false);
+        const disable = new MessageButton().setLabel("Disable").setStyle("DANGER").setCustomId(`disableLoop`).setDisabled(disabled ?? false);
+        const cancel = new MessageButton().setLabel("Cancel").setStyle("SECONDARY").setCustomId(`loopCancel`).setDisabled(disabled ?? false);
 
         const row = new MessageActionRow();
         row.addComponents([enable, disable, cancel])
@@ -39,7 +39,8 @@ class Loop extends Command {
 
         if(!collector) {
             interaction.editReply({
-                content: `• Loop is ${queue.loop ? 'on' : 'off'}`
+                content: `• Loop is ${queue.loop ? 'on' : 'off'}`,
+                components: this.generateRow(true)
             })
 
             return;
@@ -51,7 +52,8 @@ class Loop extends Command {
         else if(collector.customId === 'disableLoop') queue.loop = false;
 
         interaction.editReply({
-            content: `• Loop is ${queue.loop ? 'on' : 'off'}`
+            content: `• Loop is ${queue.loop ? 'on' : 'off'}`,
+            components: this.generateRow(true)
         })
     }
 }

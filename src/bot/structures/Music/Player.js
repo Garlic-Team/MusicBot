@@ -58,7 +58,7 @@ class Player {
                     let last = queue.shiftSong();
                     queue.addSong(last);
     
-                    return queue.play();
+                    queue.play();
                 } else {
                     queue.shiftSong();
 
@@ -71,6 +71,10 @@ class Player {
                         queue.play();
                     }
                 }
+            }
+
+            if (newState.status === AudioPlayerStatus.Playing && oldState.status === AudioPlayerStatus.Buffering) {
+                queue.connection.state.subscription.player.state.resource.volume.setVolume(queue.volume / 100);
             }
         })
     }
