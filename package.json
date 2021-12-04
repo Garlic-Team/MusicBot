@@ -1,0 +1,23 @@
+{
+  "name": "music-bot",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js",
+    "pm2": "pm2 start main.js --name MusicBot"
+  },
+  "keywords": [],
+  "author": "Garlic-Team (xHyroM)",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/voice": "^0.7.5",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "gcommands": "^8.0.1",
+    "path": "^0.12.7",
+    "youtube-sr": "^4.1.10",
+    "ytdl-core": "^4.9.1"
+  }
+}
