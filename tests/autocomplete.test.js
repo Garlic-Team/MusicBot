@@ -12,7 +12,7 @@ client.on('ready', async() => {
 
 client.on('interactionCreate', async(interaction) => {
     if(interaction.isAutocomplete()) {
-        let query = interaction.options.getString('member', true);
+        let query = interaction.options.getString('query', true);
         if(query.length == 0) query = 'Never gonna give you up';
 
         const videos = await search(query, { limit: 25 });

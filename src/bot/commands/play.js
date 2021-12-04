@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js');
 const { Command, ArgumentType } = require('gcommands');
 const Player = require('../structures/Music/Player');
 const { isUrl, search, getVideo } = require('../structures/Utils');
@@ -30,10 +31,21 @@ class Play extends Command {
         if (!isUrl(query)) query = (await search(query, 1))[0].value;
         if (!query) return interaction.editReply({ content: `I didn't find any music. Sorry...`, ephemeral: true });
 
-        const video = await getVideo(query);
-        Player.play(client, guild.id, member.voice.channel.id, video);
+        const videos = await getVideo(query);
 
-        interaction.editReply(query);
+        for(const video of videos) await Player.play(client, guild.id, member.voice.channel.id, video);
+
+        interaction.editReply({
+            embeds: [
+                new MessageEmbed()
+                    .setAuthor('Music System | Play')
+                    .setDescription(`${videos.map((video, i) => { i++; return `\`${i}.\` ${video.title} - ${video.channel.name}` }).slice(0, 10).join('\n')}\nAnd more...`)
+                    .setColor("#cf293f")
+                    .setFooter(member.user.tag, member.user.displayAvatarURL({ dynamic: true }))
+                    .setTimestamp()
+            ],
+            ephemeral: true
+        });
     }
 }
 

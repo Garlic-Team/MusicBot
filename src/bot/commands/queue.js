@@ -63,8 +63,8 @@ class Queue extends Command {
             const isEmpty = format.length < 1;
             if (format.length < 1) format.push('Any songs!');
 
-            const max = 5;
-            for (let i = 0; i >= format.length; i += max) {
+            const max = 10;
+            for (let i = 0; i <= format.length; i += max) {
                 pages.push(format.slice(i, i + max));
             }
 

@@ -1,4 +1,4 @@
-const { search, getVideo } = require('youtube-sr').default;
+const { search, getVideo, getPlaylist } = require('youtube-sr').default;
 const { getPreview } = require('spotify-url-info');
 
 class Utils {
@@ -29,18 +29,19 @@ class Utils {
      * @returns {Object}
      */
     static async getVideo(url) {
-        const youtubePatern = /^(https?:\/\/)?(www\.)?(m\.|music\.)?(youtube\.com|youtu\.?be)\/.+$/g;
-        const spotifyPatern = /^.*(https:\/\/open\.spotify\.com\/track)([^#\&\?]*).*/gi;
-
         let video;
-        if(youtubePatern.test(url)) video = await getVideo(url);
-        else if(spotifyPatern.test(url)) {
+
+        if (/^(https?:\/\/)?(www\.)?(m\.|music\.)?(youtube\.com|youtu\.?be)\/.+$/g.test(url) && !/^.*(list=)([^#\&\?]*).*/gi.test(url)) video = [await getVideo(url)];
+        if (/^.*(list=)([^#\&\?]*).*/gi.test(url)) {
+            video = (await getPlaylist(url)).videos;
+        }
+        else if (/^.*(https:\/\/open\.spotify\.com\/track)([^#\&\?]*).*/gi.test(url)) {
             const preview = await getPreview(url);
             const videoName = `${preview.title} - ${preview.artist}`;
             const videoUrl = await (await Utils.search(videoName, 1))[0].value;
             if(!videoUrl) videoUrl = await (await Utils.search('Never gonna give you up', 1))[0].value;
 
-            video = await Utils.getVideo(videoUrl);
+            video = [await Utils.getVideo(videoUrl)];
         }
 
         return video;
