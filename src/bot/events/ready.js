@@ -11,7 +11,7 @@ class Ready extends Event {
 
     run(client) {
         let users = 0;
-        for (const guild of client.guilds.cache) users += guild.memberCount;
+        for (let guild of [...client.guilds.cache.values()]) users += guild.memberCount;
 
         console.log([
             `${client.user.tag} is ready!`,
