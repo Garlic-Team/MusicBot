@@ -9,3 +9,7 @@ FFmpeg
 1. Change bot token in `template.env`  
 2. Rename `template.env` to `.env`  
 3. `npm start`  
+
+**Discord Server:**
+--
+https://discord.gg/AjKJSBbGm2
