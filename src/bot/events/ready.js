@@ -1,24 +1,24 @@
-const { Event } = require("gcommands");
+const { Event } = require('gcommands');
 
 class Ready extends Event {
     constructor(client) {
         super(client, {
             name: 'ready',
             ws: false,
-            once: true
-        })
+            once: true,
+        });
     }
 
     run(client) {
         let users = 0;
-        client.guilds.cache.map(guild => users += guild.memberCount);
+        for (const guild of client.guilds.cache) users += guild.memberCount;
 
         console.log([
             `${client.user.tag} is ready!`,
             ``,
             `Servers: ${client.guilds.cache.size}`,
-            `Users: ${users}`
-        ].join('\n'))
+            `Users: ${users}`,
+        ].join('\n'));
     }
 }
 

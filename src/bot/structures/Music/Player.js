@@ -1,12 +1,11 @@
-const { AudioPlayerStatus, joinVoiceChannel, createAudioResource, createAudioPlayer, StreamType, NoSubscriberBehavior, getVoiceConnection, entersState, VoiceConnectionStatus } = require('@discordjs/voice');
-const Queue = require("./Queue");
+const { AudioPlayerStatus, joinVoiceChannel, createAudioPlayer, NoSubscriberBehavior } = require('@discordjs/voice');
+const Queue = require('./Queue');
 
 class Player {
     static async play(client, guildId, channelId, song) {
         let queue = client.queue.get(guildId);
-        
-        if(queue) queue.addSong(song);
-        else {
+
+        if (queue) { queue.addSong(song); } else {
             queue = this.createQueue(guildId, channelId, song);
             client.queue.set(guildId, queue);
 
@@ -19,8 +18,8 @@ class Player {
         const queue = new Queue({
             guildId: guildId,
             channelId: channelId,
-            songs: [song]
-        })
+            songs: [song],
+        });
 
         return queue;
     }
@@ -33,12 +32,12 @@ class Player {
             channelId: channelId,
             adapterCreator: client.guilds.cache.get(guildId).voiceAdapterCreator,
             selfDeaf: true,
-            selfMute: false
-        })
+            selfMute: false,
+        });
 
         const player = await createAudioPlayer({
-            behaviors: { noSubscriber: NoSubscriberBehavior.Play }
-        })
+            behaviors: { noSubscriber: NoSubscriberBehavior.Play },
+        });
 
         const subscribe = connection.subscribe(player);
 
@@ -46,23 +45,23 @@ class Player {
         queue.setSubscriber(subscribe);
         queue.setPlayer(player);
 
-        connection.state.subscription.player.once(AudioPlayerStatus.Playing, () => channel.type === "GUILD_STAGE_VOICE" && channel.guild.me.voice.setSuppressed(false));
-        connection.state.subscription.player.on("error", () => {});
+        connection.state.subscription.player.once(AudioPlayerStatus.Playing, () => channel.type === 'GUILD_STAGE_VOICE' && channel.guild.me.voice.setSuppressed(false));
+        connection.state.subscription.player.on('error', () => {}); // eslint-disable-line no-empty-function
 
-        connection.state.subscription.player.on('stateChange', async(oldState, newState) => {
-            const queue = client.queue.get(guildId);
-            if(!queue) return;
+        connection.state.subscription.player.on('stateChange', (oldState, newState) => {
+            queue = client.queue.get(guildId);
+            if (!queue) return;
 
             if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
-                if(queue?.loop) {
-                    let last = queue.shiftSong();
+                if (queue?.loop) {
+                    const last = queue.shiftSong();
                     queue.addSong(last);
-    
+
                     queue.play();
                 } else {
                     queue.shiftSong();
 
-                    if(!queue.songs[0]) {
+                    if (!queue.songs[0]) {
                         queue.connection.state.subscription.player.removeAllListeners();
 
                         client.queue.delete(guildId);
@@ -76,7 +75,7 @@ class Player {
             if (newState.status === AudioPlayerStatus.Playing && oldState.status === AudioPlayerStatus.Buffering) {
                 queue.connection.state.subscription.player.state.resource.volume.setVolume(queue.volume / 100);
             }
-        })
+        });
     }
 }
 

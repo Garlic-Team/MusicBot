@@ -1,60 +1,66 @@
-const { Command } = require("gcommands");
-const { MessageActionRow, MessageButton } = require('discord.js')
+const { Command } = require('gcommands');
+const { MessageActionRow, MessageButton } = require('discord.js');
 
 class Loop extends Command {
     constructor(client) {
         super(client, {
             name: 'loop',
             description: 'Turn on/off loop',
-            guildOnly: '747526604116459691'
-        })
+            guildOnly: '747526604116459691',
+        });
     }
 
     generateRow(disabled) {
-        const enable = new MessageButton().setLabel("Enable").setStyle("SUCCESS").setCustomId(`enableLoop`).setDisabled(disabled ?? false);
-        const disable = new MessageButton().setLabel("Disable").setStyle("DANGER").setCustomId(`disableLoop`).setDisabled(disabled ?? false);
-        const cancel = new MessageButton().setLabel("Cancel").setStyle("SECONDARY").setCustomId(`loopCancel`).setDisabled(disabled ?? false);
+        const enable = new MessageButton().setLabel('Enable').setStyle('SUCCESS')
+.setCustomId(`enableLoop`)
+.setDisabled(disabled ?? false);
+        const disable = new MessageButton().setLabel('Disable').setStyle('DANGER')
+.setCustomId(`disableLoop`)
+.setDisabled(disabled ?? false);
+        const cancel = new MessageButton().setLabel('Cancel').setStyle('SECONDARY')
+.setCustomId(`loopCancel`)
+.setDisabled(disabled ?? false);
 
         const row = new MessageActionRow();
-        row.addComponents([enable, disable, cancel])
+        row.addComponents([enable, disable, cancel]);
 
         return [row];
     }
 
     async run({ client, respond, guild, member, interaction, channel }) {
-        if(!member.voice?.channel) return respond({ content: 'Beep boop voice?', ephemeral: true });
+        if (!member.voice?.channel) return respond({ content: 'Beep boop voice?', ephemeral: true });
 
         const queue = client.queue.get(guild.id);
-        if(!queue) return respond({ content: 'Beep boop queue?', ephemeral: true });
+        if (!queue) return respond({ content: 'Beep boop queue?', ephemeral: true });
 
         const message = await respond({
             content: `• Turn loop on/off.`,
             ephemeral: true,
             components: this.generateRow(),
-            fetchReply: true
-        })
+            fetchReply: true,
+        });
 
-        const filter = (i) => i?.message?.id === message.id;
+        const filter = i => i?.message?.id === message.id;
         const collector = await channel.awaitMessageComponent({ filter, time: 60000, max: 1 });
 
-        if(!collector) {
+        if (!collector) {
             interaction.editReply({
                 content: `• Loop is ${queue.loop ? 'on' : 'off'}`,
-                components: this.generateRow(true)
-            })
+                components: this.generateRow(true),
+            });
 
             return;
         }
 
         collector.deferUpdate();
 
-        if(collector.customId === 'enableLoop') queue.loop = true;
-        else if(collector.customId === 'disableLoop') queue.loop = false;
+        if (collector.customId === 'enableLoop') queue.loop = true;
+        else if (collector.customId === 'disableLoop') queue.loop = false;
 
         interaction.editReply({
             content: `• Loop is ${queue.loop ? 'on' : 'off'}`,
-            components: this.generateRow(true)
-        })
+            components: this.generateRow(true),
+        });
     }
 }
 
