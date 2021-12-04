@@ -15,13 +15,12 @@
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.7.5",
-    "discord-ytdl-core": "^5.0.4",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
     "gcommands": "^8.0.1",
     "path": "^0.12.7",
-    "youtube-sr": "^4.1.10",
-    "ytdl-core": "^4.9.1"
+    "play-dl": "^1.4.4",
+    "youtube-sr": "^4.1.10"
   },
   "devDependencies": {
     "eslint": "^8.4.0",
