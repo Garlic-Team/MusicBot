@@ -33,13 +33,13 @@ class Utils {
 
         if (/^(https?:\/\/)?(www\.)?(m\.|music\.)?(youtube\.com|youtu\.?be)\/.+$/g.test(url) && !/^.*(list=)([^#\&\?]*).*/gi.test(url)) video = [await getVideo(url)];
         if (/^.*(list=)([^#\&\?]*).*/gi.test(url)) {
-            video = (await getPlaylist(url)).videos;
+            video = await (await (await getPlaylist(url)).fetch()).videos;
         }
         else if (/^.*(https:\/\/open\.spotify\.com\/track)([^#\&\?]*).*/gi.test(url)) {
             const preview = await getPreview(url);
             const videoName = `${preview.title} - ${preview.artist}`;
-            const videoUrl = await (await Utils.search(videoName, 1))[0].value;
-            if(!videoUrl) videoUrl = await (await Utils.search('Never gonna give you up', 1))[0].value;
+            const videoUrl = await (Utils.search(videoName, 1))[0].value;
+            if(!videoUrl) videoUrl = await (Utils.search('Never gonna give you up', 1))[0].value;
 
             video = [await Utils.getVideo(videoUrl)];
         }

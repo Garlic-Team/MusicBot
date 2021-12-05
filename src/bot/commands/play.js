@@ -39,7 +39,7 @@ class Play extends Command {
             embeds: [
                 new MessageEmbed()
                     .setAuthor('Music System | Play')
-                    .setDescription(`${videos.map((video, i) => { i++; return `\`${i}.\` ${video.title} - ${video.channel.name}` }).slice(0, 10).join('\n')}\nAnd more...`)
+                    .setDescription(`**Requested by**: ${member.user.tag}\n**Requested**: ${videos.length} song(s)\n\n${videos.map((video, i) => { i++; return `\`${i}.\` ${video.title} - ${video.channel.name}` }).slice(0, 10).join('\n')}\nAnd more...`)
                     .setColor("#cf293f")
                     .setFooter(member.user.tag, member.user.displayAvatarURL({ dynamic: true }))
                     .setTimestamp()
