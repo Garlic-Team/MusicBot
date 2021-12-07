@@ -17,7 +17,7 @@
     "@discordjs/voice": "^0.7.5",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
-    "gcommands": "^8.0.1",
+    "gcommands": "^8.0.2",
     "path": "^0.12.7",
     "play-dl": "^1.4.4",
     "spotify-url-info": "^2.2.3",

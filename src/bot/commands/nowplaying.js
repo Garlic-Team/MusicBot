@@ -28,7 +28,7 @@ class Nowplaying extends Command {
         if (song.live) {
             embed.addField('Time', `:red_circle: **LIVE**`.toString());
         } else {
-            embed.addField('Time', `${new ProgressBar(time / total, 15, client, false).toEmoji()}\n**${new FormatTime(Math.floor(time / 1000))} / ${new FormatTime(Math.floor(total / 1000))} - ${new FormatTime(Math.floor((time - total) / 1000))} left (${Math.floor((time / total) * 100)}%)**`.toString());
+            embed.addField('Time', `${new ProgressBar(time / total, 15, client, false).toEmoji()}\n**${new FormatTime(Math.floor(time / 1000))} / ${new FormatTime(Math.floor(total / 1000))} - ${new FormatTime(Math.floor((total - time) / 1000))} left (${Math.floor((time / total) * 100)}%)**`.toString());
         }
 
         embed.addField('Author', song.channel.name, true);
