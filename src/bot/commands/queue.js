@@ -1,38 +1,33 @@
-const { Command } = require('gcommands');
+const { Command, CommandType } = require('gcommands');
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 
-class Queue extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'queue',
-            description: 'Check queue',
-            guildOnly: '747526604116459691',
-        });
-    }
-
-    genRow(page, pages, isEmpty, disable) {
-        const pageL = new MessageButton().setLabel('Previous Page').setStyle('SECONDARY')
+const genRow = (page, pages, isEmpty, disable) => {
+    const pageL = new MessageButton().setLabel('Previous Page').setStyle('SECONDARY')
 .setCustomId('pageL')
 .setDisabled((page === 0) || disable);
-        const pageR = new MessageButton().setLabel('Next Page').setStyle('SECONDARY')
+    const pageR = new MessageButton().setLabel('Next Page').setStyle('SECONDARY')
 .setCustomId('pageR')
 .setDisabled((page === pages.length - 1) || disable);
-        const skip = new MessageButton().setLabel('Skip').setStyle('SECONDARY')
+    const skip = new MessageButton().setLabel('Skip').setStyle('SECONDARY')
 .setCustomId('skip')
 .setDisabled((isEmpty) || disable);
-        const cancel = new MessageButton().setLabel('Cancel').setStyle('DANGER')
+    const cancel = new MessageButton().setLabel('Cancel').setStyle('DANGER')
 .setCustomId('cancel')
 .setDisabled(disable);
 
-        const buttonRow = new MessageActionRow();
-        buttonRow.addComponents([pageL, pageR, skip, cancel]);
+    const buttonRow = new MessageActionRow();
+    buttonRow.addComponents([pageL, pageR, skip, cancel]);
 
-        return [buttonRow];
-    }
+    return [buttonRow];
+}
 
-    async run({ respond, client, guild, channel, interaction }) {
+new Command({
+    name: 'queue',
+    description: 'Check queue',
+    type: [ CommandType.SLASH ],
+    run: async({ reply, client, guild, channel, interaction }) => {
         const queue = client.queue.get(guild.id);
-        if (!queue) return respond({ content: 'Beep boop queue?', ephemeral: true });
+        if (!queue) return reply({ content: 'Beep boop queue?', ephemeral: true });
 
         const arrows = ['⬐','⬑'];
         const dots = '…';
@@ -73,15 +68,15 @@ class Queue extends Command {
 
         let isEmpty = fill();
 
-        const message = await respond({
+        const message = await reply({
             embeds: [
                 new MessageEmbed()
-                    .setAuthor('Music System | Queue')
+                    .setAuthor({ name: 'Music System | Queue'})
                     .setTitle(`Page ${page}`)
                     .setDescription(`\`\`\`nim\n${pages[page].join('\n')}\`\`\``)
                     .setColor('#cf293f'),
             ],
-            components: this.genRow(page, pages, isEmpty, false),
+            components: genRow(page, pages, isEmpty, false),
             ephemeral: true,
             fetchReply: true,
         });
@@ -93,12 +88,12 @@ class Queue extends Command {
             interaction.editReply({
                 embeds: [
                     new MessageEmbed()
-                        .setAuthor('Music System | Queue')
+                        .setAuthor({ name: 'Music System | Queue' })
                         .setTitle(`Page ${page}`)
                         .setDescription(`\`\`\`nim\n${pages[page].join('\n')}\`\`\``)
                         .setColor('#cf293f'),
                 ],
-                components: this.genRow(page, pages, isEmpty, true),
+                components: genRow(page, pages, isEmpty, true),
                 ephemeral: true,
             });
         });
@@ -114,12 +109,12 @@ class Queue extends Command {
                 interaction.editReply({
                     embeds: [
                         new MessageEmbed()
-                            .setAuthor('Music System | Queue')
+                            .setAuthor({ name: 'Music System | Queue' })
                             .setTitle(`Page ${page}`)
                             .setDescription(`\`\`\`nim\n${pages[page].join('\n')}\`\`\``)
                             .setColor('#cf293f'),
                     ],
-                    components: this.genRow(page, pages, isEmpty, true),
+                    components: genRow(page, pages, isEmpty, true),
                     ephemeral: true,
                 });
 
@@ -131,16 +126,14 @@ class Queue extends Command {
             interaction.editReply({
                 embeds: [
                     new MessageEmbed()
-                        .setAuthor('Music System | Queue')
+                        .setAuthor({ name: 'Music System | Queue' })
                         .setTitle(`Page ${page}`)
                         .setDescription(`\`\`\`nim\n${pages[page].join('\n')}\`\`\``)
                         .setColor('#cf293f'),
                 ],
-                components: this.genRow(page, pages, isEmpty, false),
+                components: genRow(page, pages, isEmpty, false),
                 ephemeral: true,
             });
         });
     }
-}
-
-module.exports = Queue;
+});

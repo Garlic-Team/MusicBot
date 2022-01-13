@@ -1,27 +1,22 @@
 const { MessageEmbed } = require('discord.js');
-const { Command } = require('gcommands');
+const { Command, CommandType } = require('gcommands');
 const ProgressBar = require('../structures/ProgressBar');
 const FormatTime = require('../structures/FormatTime');
 
-class Nowplaying extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'nowplaying',
-            description: 'Now playing',
-            guildOnly: '747526604116459691',
-        });
-    }
-
-    run({ respond, client, guild }) {
+new Command({
+    name: 'nowplaying',
+    description: 'Now playing',
+    type: [ CommandType.SLASH ],
+    run: ({ reply, client, guild }) => {
         const queue = client.queue.get(guild.id);
-        if (!queue) return respond({ content: 'Beep boop queue?', ephemeral: true });
+        if (!queue) return reply({ content: 'Beep boop queue?', ephemeral: true });
 
         const song = queue.songs[0];
         const time = queue.connection.state.subscription.player.state.resource.playbackDuration;
         const total = song.duration;
 
         const embed = new MessageEmbed()
-        .setAuthor('Music System | Now Playing')
+        .setAuthor({ name: 'Music System | Now Playing' })
         .setTitle(song.title)
         .setThumbnail(song.thumbnail.url);
 
@@ -38,8 +33,6 @@ class Nowplaying extends Command {
 
         embed.setColor('#cf293f');
 
-        respond({ embeds: [embed], ephemeral: true });
+        reply({ embeds: [embed], ephemeral: true });
     }
-}
-
-module.exports = Nowplaying;
+});

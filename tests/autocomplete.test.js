@@ -17,7 +17,7 @@ client.on('interactionCreate', async(interaction) => {
 
         const videos = await search(query, { limit: 25 });
 
-        interaction.respond(videos.map(video => {
+        interaction.reply(videos.map(video => {
             return {
                 name: video.title,
                 value: video.url

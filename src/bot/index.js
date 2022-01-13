@@ -1,24 +1,21 @@
 require('dotenv').config();
-const { Intents } = require('discord.js');
+const { Intents, Collection } = require('discord.js');
+const { GClient } = require('gcommands');
 const path = require('path');
-const MusicClient = require('./structures/MusicClient');
 
-const client = new MusicClient({
+const client = new GClient({
     intents: [
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.GUILD_VOICE_STATES,
         Intents.FLAGS.GUILD_MEMBERS,
     ],
-    language: 'english',
-    loader: {
-        cmdDir: path.join(__dirname, 'commands'),
-        eventDir: path.join(__dirname, 'events'),
-    },
-    commands: {
-        slash: 'slash',
-        context: 'false',
-    },
-    token: process.env.DISCORD_TOKEN,
+    dirs: [
+        path.join(__dirname, 'commands'),
+        path.join(__dirname, 'events')
+    ],
+    devGuildId: '747526604116459691'
 });
 
-client.run();
+client.queue = new Collection();
+
+client.login(process.env.DISCORD_TOKEN);

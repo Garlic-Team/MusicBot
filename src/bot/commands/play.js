@@ -1,28 +1,28 @@
 const { MessageEmbed } = require('discord.js');
-const { Command, ArgumentType } = require('gcommands');
+const { Command, ArgumentType, CommandType } = require('gcommands');
 const Player = require('../structures/Music/Player');
 const { isUrl, search, getVideo } = require('../structures/Utils');
 
-class Play extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'play',
-            description: 'Play song',
-            guildOnly: '747526604116459691',
-            args: [
-                {
-                    name: 'query',
-                    description: 'Query for search',
-                    type: ArgumentType.STRING,
-                    required: true,
-                    autocomplete: true,
-                },
-            ],
-        });
-    }
-
-    async run({ client, respond, args, guild, member, interaction }) {
-        if (!member.voice?.channel) return respond({ content: 'Beep boop voice?', ephemeral: true });
+new Command({
+    name: 'play',
+    description: 'Play song',
+    type: [ CommandType.SLASH ],
+    arguments: [
+        {
+            name: 'query',
+            description: 'Query for search',
+            type: ArgumentType.STRING,
+            required: true,
+            run: async(ctx) => {
+                const query = ctx.value || 'Never gonna give you up';
+                const videos = await search(query, 15);
+    
+                ctx.respond(videos);
+            }
+        },
+    ],
+    run: async({ client, reply, args, guild, member, interaction }) => {
+        if (!member.voice?.channel) return reply({ content: 'Beep boop voice?', ephemeral: true });
 
         let query = args.getString('query');
 
@@ -38,15 +38,13 @@ class Play extends Command {
         interaction.editReply({
             embeds: [
                 new MessageEmbed()
-                    .setAuthor('Music System | Play')
+                    .setAuthor({ name: 'Music System | Play' })
                     .setDescription(`**Requested by**: ${member.user.tag}\n**Requested**: ${videos.length} song(s)\n\n${videos.map((video, i) => { i++; return `\`${i}.\` ${video.title} - ${video.channel.name}` }).slice(0, 10).join('\n')}\nAnd more...`)
                     .setColor("#cf293f")
-                    .setFooter(member.user.tag, member.user.displayAvatarURL({ dynamic: true }))
+                    .setFooter({ text: member.user.tag, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                     .setTimestamp()
             ],
             ephemeral: true
         });
     }
-}
-
-module.exports = Play;
+});
