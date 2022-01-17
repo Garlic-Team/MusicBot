@@ -18,7 +18,6 @@
     "discord.js": "^13.5.1",
     "dotenv": "^10.0.0",
     "gcommands": "^9.0.0-next",
-    "path": "^0.12.7",
     "play-dl": "^1.4.4",
     "spotify-url-info": "^2.2.3",
     "youtube-sr": "^4.1.10"
