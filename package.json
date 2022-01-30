@@ -20,7 +20,7 @@
     "gcommands": "^9.0.0-next",
     "play-dl": "^1.4.4",
     "spotify-url-info": "^2.2.3",
-    "youtube-sr": "^4.1.10"
+    "youtube-sr": "^4.1.11"
   },
   "devDependencies": {
     "eslint": "^8.4.0",
