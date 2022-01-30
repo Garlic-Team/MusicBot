@@ -13,7 +13,7 @@
   "author": "Garlic-Team (xHyroM)",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
+    "@discordjs/opus": "^0.7.0",
     "@discordjs/voice": "^0.7.5",
     "discord.js": "^13.5.1",
     "dotenv": "^10.0.0",
