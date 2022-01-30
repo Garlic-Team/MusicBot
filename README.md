@@ -1,3 +1,5 @@
+# ARCHIVED, https://github.com/Garlic-Team/other-stuff/tree/musicbot
+
 **Requirements:**
 --
 Nodejs v16  
